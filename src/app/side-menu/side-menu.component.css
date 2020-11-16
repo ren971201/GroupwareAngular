@@ -1,0 +1,19 @@
+aside {
+  width: 240px;
+  height: 3000px;
+  margin-top: 0;
+  padding-top: 0;
+  color: #fff;
+  background-color: #1E90FF;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+}
+/*# sourceMappingURL=side-menu.component.css.map */

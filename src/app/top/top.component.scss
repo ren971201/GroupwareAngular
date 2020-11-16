@@ -1,0 +1,48 @@
+$cMain: #1E90FF;
+$cWhite: rgb(253, 253, 253);
+
+.top-page {
+    padding: 20px;
+    background-color:$cWhite;
+}
+
+.event {
+    padding-top: 30px;
+}
+
+h1 {
+    color: $cMain;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 10px 10px;
+}
+
+th,td {
+    text-align: center;
+    border: solid 1px;
+    border-color:$cMain;
+}
+
+th {
+    padding: 0 10px;
+    color: $cWhite;
+    background-color: $cMain;
+}
+
+td {
+    padding: 2px 10px;
+    color: $cMain;
+    background-color: $cWhite;
+}
+
+.box-l {
+    min-width: 250px;
+}
+.box-m {
+    min-width: 150px;
+}
+.box-s {
+    min-width: 100px;
+}

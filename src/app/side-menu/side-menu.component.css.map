@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAGA,AAAA,KAAK,CAAC;EACF,KAAK,EAAE,KAAK;EACZ,MAAM,EAAE,MAAM;EACd,UAAU,EAAE,CAAC;EACb,WAAW,EAAE,CAAC;EAGd,KAAK,EATA,IAAI;EAUT,gBAAgB,EAXb,OAAO;CAYb;;AAED,AAAA,EAAE,CAAC;EACC,UAAU,EAAE,IAAI;EAChB,MAAM,EAAE,CAAC;CACZ;;AAED,AAAA,CAAC,CAAC;EACE,eAAe,EAAE,IAAI;EACrB,KAAK,EApBA,IAAI;CAqBZ",
+    "sources": [
+        "side-menu.component.scss"
+    ],
+    "names": [],
+    "file": "side-menu.component.css"
+}

@@ -4,10 +4,13 @@ $cChar: $cWhite;
 $cCharForm: $cMain;
 
 .wrapper{
+	position: absolute;
 	top: 50%;
 	left: 0;
 	width: 100%;
 	height: 400px;
+	margin-top: -200px;
+	overflow: hidden;
 	
 	&.form-success{
 		.container{
@@ -114,4 +117,9 @@ form{
             opacity: 0.5;
         }
 	}
+
+	&.form-success{
+		display: none;
+    }
 }
+

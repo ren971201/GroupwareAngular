@@ -1,0 +1,107 @@
+.top-page {
+  color: #1E90FF;
+  width: 100%;
+  margin: 30px;
+}
+
+.information-item {
+  width: 600px;
+}
+
+.information-item-title {
+  color: #fff;
+  background-color: #1E90FF;
+  text-align: center;
+}
+
+.information-item-item {
+  border: 1px solid #1E90FF;
+  margin-top: 4px;
+  padding-left: 16px;
+}
+
+.event-title {
+  color: #1E90FF;
+  margin-top: 50px;
+}
+
+.event-item div {
+  margin-top: 4px;
+  margin-right: 4px;
+}
+
+.event-item-event {
+  width: 300px;
+  display: inline-block;
+  text-align: center;
+}
+
+.event-item-event-title {
+  color: #fff;
+  background-color: #1E90FF;
+}
+
+.event-item-event-item {
+  border: 1px solid #1E90FF;
+}
+
+.event-item-schedule {
+  width: 300px;
+  display: inline-block;
+  text-align: center;
+}
+
+.event-item-schedule-title {
+  color: #fff;
+  background-color: #1E90FF;
+}
+
+.event-item-schedule-item {
+  border: 1px solid #1E90FF;
+}
+
+.event-item-place {
+  width: 300px;
+  display: inline-block;
+  text-align: center;
+}
+
+.event-item-place-title {
+  color: #fff;
+  background-color: #1E90FF;
+}
+
+.event-item-place-item {
+  border: 1px solid #1E90FF;
+}
+
+.event-item-start-time {
+  width: 150px;
+  display: inline-block;
+  text-align: center;
+}
+
+.event-item-start-time-title {
+  color: #fff;
+  background-color: #1E90FF;
+}
+
+.event-item-start-time-item {
+  border: 1px solid #1E90FF;
+}
+
+.event-item-end-time {
+  width: 150px;
+  display: inline-block;
+  text-align: center;
+}
+
+.event-item-end-time-title {
+  color: #fff;
+  background-color: #1E90FF;
+}
+
+.event-item-end-time-item {
+  border: 1px solid #1E90FF;
+}
+/*# sourceMappingURL=top.component.css.map */

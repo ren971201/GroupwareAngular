@@ -1,0 +1,23 @@
+$cMain:#1E90FF;
+$cChar:  #fff;
+
+aside {
+    width: 240px;
+    height: 100%;
+    margin-top: 0;
+    padding-top: 0;
+    position: fixed;
+
+    color: $cChar;
+    background-color: $cMain;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+}
+
+a {	
+    text-decoration: none;
+    color:$cChar;
+}

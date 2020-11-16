@@ -1,0 +1,12 @@
+<div class="wrapper" [class]="styleClass">
+    <div class="container">
+        <h1>{{message}}</h1>
+        <form class="form" id="login-form"  [class]="styleClass"  [formGroup]="loginForm" (submit)="onSubmit()">
+            <div *ngIf="loginForm.value.username.invalid">ユーザーネームを入力してください。</div>
+            <input type="text" placeholder="Username"  formControlName="username"/>
+            <div *ngIf="loginForm.value.password.invalid">パスワードを入力してください。</div>
+            <input type="password" placeholder="Password" pattern=".*"  formControlName="password"/>
+            <input type="submit" value="Login"  class='submit' [disabled]="loginForm.invalid"/>
+        </form>
+    </div>
+</div>

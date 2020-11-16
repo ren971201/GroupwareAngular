@@ -1,0 +1,22 @@
+$cWhite: rgb(253, 253, 253);
+
+.layout {
+    min-height: 100%;
+    background-color:$cWhite;
+}
+
+.contents{
+    min-height: 100%;
+    margin-top: 80px;
+    &:nth-child(n) {
+        display: flex;
+    }
+}
+
+.move {
+    margin-left: 240px;
+}
+
+app-side-menu {
+    min-height: 100%;
+}

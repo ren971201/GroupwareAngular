@@ -1,0 +1,11 @@
+<div class="layout">
+    <app-header (visibleEvent)="doVisible()"></app-header>
+    <div class='contents'>
+        <app-side-menu [visible] = 'visibleSidemenu'></app-side-menu>
+        <div [class]="style">
+
+        </div>
+        <router-outlet></router-outlet>
+    </div>
+</div>
+

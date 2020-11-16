@@ -1,0 +1,19 @@
+.layout {
+  min-height: 100%;
+}
+
+.contents {
+  min-height: 100%;
+  margin-top: 100px;
+}
+
+.contents:nth-child(n) {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+app-side-menu {
+  min-height: 100%;
+}
+/*# sourceMappingURL=layout.component.css.map */

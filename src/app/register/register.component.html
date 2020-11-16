@@ -1,0 +1,13 @@
+<div class="wrapper" [class]="styleClass">
+    <div class="container">
+        <h1>Register</h1>
+        <form id="registrationForm" [class]="styleClass" onSubmit={this.doAction}>
+            <input type="text" placeholder="Username" pattern=".*" required/>
+            <input type="email" placeholder="Email" pattern=".*" required/>
+            <input type="password" placeholder="Password" pattern=".*" required/>
+            <input type="password" placeholder="Confirm Password" pattern=".*" required/>
+            <input type="submit" value="Register" class='submit'  (click)=onClick()/>
+            <div [class]="styleClass"><a [routerLink]="['/verify']">※ユーザーを確認する</a></div>
+        </form>
+    </div>
+</div>

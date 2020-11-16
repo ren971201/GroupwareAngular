@@ -3,11 +3,19 @@ $cWhite: white;
 $cChar: $cWhite;
 $cCharForm: $cMain;
 
+a {	
+    text-decoration: none;
+    color:$cMain;
+}
+
 .wrapper{
+	position: absolute;
 	top: 50%;
 	left: 0;
 	width: 100%;
-	height: 400px;
+	height: 600px;
+	margin-top: -250px;
+	overflow: hidden;
 	
 	&.form-success{
 		.container{
@@ -114,4 +122,9 @@ form{
             opacity: 0.5;
         }
 	}
+
+	&.form-success{
+		display: none;
+    }
 }
+

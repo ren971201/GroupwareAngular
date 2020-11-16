@@ -1,0 +1,32 @@
+<div class='top-page'>
+    <div class='information'>
+        <h1>お知らせ</h1>
+        <table>
+            <tr><th>お知らせ</th></tr>
+            <tr *ngFor="let item of getInformation()">
+                <td>{{item.item}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class='event'>
+        <h1>イベント</h1>
+        <table>
+          <tr>
+            <th class="box-l">イベント</th>
+            <th class="box-m">日程</th>
+            <th class="box-l">場所</th>
+            <th class="box-s">開始時刻</th>
+            <th class="box-s">終了時刻</th>
+          </tr>
+          <tr *ngFor="let item of products">
+            <td>{{item.event}}</td>
+            <td>{{item.schedule}}</td>  
+            <td>{{item.place}}</td>  
+            <td>{{item.start}}</td>  
+            <td>{{item.end}}</td>  
+          </tr>
+        </table>
+        <hr>    
+        <ngb-pagination class="d-flex justify-content-start" [collectionSize]="15" [pageSize]=CONSTANT_NUMBER [(page)]="page" [directionLinks]="false" (pageChange)=dataLoad()></ngb-pagination>
+    </div>
+  </div>

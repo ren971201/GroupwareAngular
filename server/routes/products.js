@@ -9,16 +9,6 @@ router.get('', function(req, res){
     })
 })
 
-// router.get('/:productId', function(req, res){
-//     const productId = req.params.productId;
-//     Product.findById(productId, function(err, foundProduct){
-//         if(err) {
-//             return res.status(422).send({errors: [{title: 'Product error', detail:'Product not found!'}]})
-//         }
-//         return res.json(foundProduct);
-//     })
-// });
-
 router.get('/:page', function(req, res){
     const index = (parseInt(req.params.page)-1);
     const skip = index * NUMBER;
@@ -32,5 +22,13 @@ router.get('/:page', function(req, res){
         return res.json(foundProduct);
     })
 });
+
+router.post('/comit',function(req, res){
+    res.send('perfect');
+
+    const newProduct = new Product(req.body);
+
+    newProduct.save();
+})
 
 module.exports = router;

@@ -13,6 +13,13 @@ export class TopComponent implements OnInit {
   page:number = 1;
   products:any;
   countData:number = 15;
+  item ={
+    "event":"勉強会",
+    "schedule":"2020/11/17",
+    "place":"roomY",
+    "start":"17:00",
+    "end":"18:00"
+  };
 
   constructor(private service: MycheckService,private productService: ProductService) {
     this.reloadPageCount();
@@ -55,14 +62,7 @@ export class TopComponent implements OnInit {
 
   // データの追加処理
   postData(){
-    const item ={
-      "event":"勉強会",
-      "schedule":"2020/11/17",
-      "place":"roomY",
-      "start":"17:00",
-      "end":"18:00"
-    }
-    this.productService.postProductData(item);
+    this.productService.postProductData(this.item);
     this.reloadPageCount();
   }
 

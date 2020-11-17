@@ -29,5 +29,12 @@
         <hr>    
         <ngb-pagination class="d-flex justify-content-start" [collectionSize]="countData" [pageSize]=CONSTANT_NUMBER [(page)]="page" [directionLinks]="false" (pageChange)=dataLoad()></ngb-pagination>
     </div>
-    <button (click)=postData()>Post</button>
+    <form class="form" id="login-form" [(formGroup)]="postForm" (submit)="postData()">
+      <input type="text" placeholder="Event"  formControlName="event"/>
+      <input type="text" placeholder="Schedule" pattern=".*"  formControlName="schedule"/>
+      <input type="text" placeholder="Place"  formControlName="place"/>
+      <input type="text" placeholder="Start" pattern=".*"  formControlName="start"/>
+      <input type="text" placeholder="End" pattern=".*"  formControlName="end"/>
+      <input type="submit" value="Post"  class='submit' [disabled]="postForm.invalid"/>
+    </form>
   </div>

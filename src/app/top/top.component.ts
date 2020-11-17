@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MycheckService } from '../mycheck.service';
 import { ProductService } from '../shared/product.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-top',
@@ -20,6 +21,7 @@ export class TopComponent implements OnInit {
     "start":"17:00",
     "end":"18:00"
   };
+  postForm:FormGroup;
 
   constructor(private service: MycheckService,private productService: ProductService) {
     this.reloadPageCount();
@@ -34,6 +36,13 @@ export class TopComponent implements OnInit {
       (err)=>{console.log('エラー:'+err);},
       ()=>{console.log('初期ロード完了');}
     );
+    this.postForm= new FormGroup({
+      event:new FormControl('', [Validators.required]),
+      schedule:new FormControl('', [Validators.required]),
+      place:new FormControl('', [Validators.required]),
+      start:new FormControl('', [Validators.required]),
+      end:new FormControl('', [Validators.required])
+    });
   }
 
   // 総ページ数を取得

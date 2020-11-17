@@ -16,6 +16,12 @@ mongoose.connect(config.DB_URI,{
 )
 
 const app = express();
+const bodyParser = require('body-parser');
+// urlencodedとjsonは別々に初期化する
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 
 app.use('/api/v1/products', productRoutes);
 

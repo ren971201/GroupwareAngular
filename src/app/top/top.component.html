@@ -27,6 +27,7 @@
           </tr>
         </table>
         <hr>    
-        <ngb-pagination class="d-flex justify-content-start" [collectionSize]="15" [pageSize]=CONSTANT_NUMBER [(page)]="page" [directionLinks]="false" (pageChange)=dataLoad()></ngb-pagination>
+        <ngb-pagination class="d-flex justify-content-start" [collectionSize]="countData" [pageSize]=CONSTANT_NUMBER [(page)]="page" [directionLinks]="false" (pageChange)=dataLoad()></ngb-pagination>
     </div>
+    <button (click)=postData()>Post</button>
   </div>

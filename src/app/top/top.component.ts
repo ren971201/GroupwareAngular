@@ -14,11 +14,13 @@ export class TopComponent implements OnInit {
   products:any;
   countData:number = 15;
 
-  constructor(private service: MycheckService,private productService: ProductService) { }
+  constructor(private service: MycheckService,private productService: ProductService) {
+    this.reloadPageCount();
+  }
 
   ngOnInit(): void {
-    const productsObservable = this.productService.getProductPage(String(this.page));
-    productsObservable.subscribe(
+    this.productService.getProductPage(String(this.page))
+    .subscribe(
       (data)=>{
         this.products = data;
       },
@@ -27,9 +29,22 @@ export class TopComponent implements OnInit {
     );
   }
 
+  // 総ページ数を取得
+  reloadPageCount(){
+    this.productService.getProducts()
+    .subscribe(
+      (data)=>{
+        this.countData = data.length;
+      },
+      (err)=>{console.log('エラー:'+err);},
+      ()=>{console.log('ロード完了');}
+    );
+  }
+
+  // ページネーションのページ切り替え時の処理
   dataLoad(){
-    const productsObservable = this.productService.getProductPage(String(this.page));
-    productsObservable.subscribe(
+    this.productService.getProductPage(String(this.page))
+    .subscribe(
       (data)=>{
         this.products = data;
       },
@@ -38,6 +53,7 @@ export class TopComponent implements OnInit {
     );
   }
 
+  // データの追加処理
   postData(){
     const item ={
       "event":"勉強会",
@@ -47,6 +63,7 @@ export class TopComponent implements OnInit {
       "end":"18:00"
     }
     this.productService.postProductData(item);
+    this.reloadPageCount();
   }
 
   getInformation() {

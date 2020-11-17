@@ -7,10 +7,6 @@ import { Observable } from 'rxjs';
 export class ProductService {
     constructor(private http: HttpClient){ }
 
-    countData(){
-        return;
-    }
-
     getProducts(): Observable<any> {
         return this.http.get('/api/v1/products');
     }

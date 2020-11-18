@@ -15,7 +15,7 @@ router.get('/:page', function(req, res){
     const index = (parseInt(req.params.page)-1);
     const skip = index * NUMBER;
     Product.find({})
-    .sort({"schedule":1})
+    .sort({"schedule":1, "start":1, "end":1 })
     .limit(NUMBER)
     .skip(skip)
     .exec(function(err, foundProduct){

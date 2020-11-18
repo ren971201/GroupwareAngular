@@ -93,6 +93,7 @@ export class TopComponent implements OnInit {
     this.productService.postProductData(newData);
     this.reloadPageCount();
     this.postForm.reset();
+    this.dataLoad();
   }
 
   // お知らせを取得

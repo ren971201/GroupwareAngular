@@ -29,12 +29,25 @@
         <hr>    
         <ngb-pagination class="d-flex justify-content-start" [collectionSize]="countData" [pageSize]=CONSTANT_NUMBER [(page)]="page" [directionLinks]="false" (pageChange)=dataLoad()></ngb-pagination>
     </div>
-    <form class="form" id="login-form" [(formGroup)]="postForm" (submit)="postData()">
-      <input type="text" placeholder="Event"  formControlName="event"/>
-      <input type="text" placeholder="Schedule" pattern=".*"  formControlName="schedule"/>
-      <input type="text" placeholder="Place"  formControlName="place"/>
-      <input type="text" placeholder="Start" pattern=".*"  formControlName="start"/>
-      <input type="text" placeholder="End" pattern=".*"  formControlName="end"/>
-      <input type="submit" value="Post"  class='submit' [disabled]="postForm.invalid"/>
-    </form>
+    <div class='post'>
+        <h1>イベント追加</h1>
+        <form class="form" id="login-form" [(formGroup)]="postForm" (submit)="postData()">
+          <label>イベント</label><br>
+          <input type="text" placeholder="Event"  formControlName="event" [(ngModel)]="event"/>
+          <br>
+          <label>日程</label><br>
+          <input type="date" placeholder="Schedule" formControlName="schedule" [(ngModel)]="schedule"/>
+          <br>
+          <label>場所</label><br>
+          <input type="text" placeholder="Place"  formControlName="place" [(ngModel)]="place"/>
+          <br>
+          <label>開始時刻</label><br>
+          <input type="time" placeholder="Start" formControlName="start" [(ngModel)]="start"/>
+          <br>
+          <label>終了時刻</label><br>
+          <input type="time" placeholder="End" formControlName="end" [(ngModel)]="end"/>
+          <br>
+          <input type="submit" value="Post"  class='submit' [disabled]="postForm.invalid"/>
+        </form>
+    </div>
   </div>

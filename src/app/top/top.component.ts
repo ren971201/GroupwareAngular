@@ -20,6 +20,20 @@ export class TopComponent implements OnInit {
   start:string = "";
   end:string = "";
   postForm:FormGroup;
+  listPlace = [
+    { name : "ミーティングルーム1" },
+    { name : "ミーティングルーム2" },
+    { name : "ミーティングルーム4" },
+    { name : "応接室" },
+    { name : "特別会議室" },
+    { name : "休憩室" },
+    { name : "roomR" },
+    { name : "roomB" },
+    { name : "roomY" },
+    { name : "roomG" }
+  ]
+  visiblePostForm:boolean = false;
+  btnMessage:string = "イベントを追加";
 
   constructor(private service: MycheckService,private productService: ProductService) {
     this.reloadPageCount();
@@ -78,13 +92,23 @@ export class TopComponent implements OnInit {
     };  
     this.productService.postProductData(newData);
     this.reloadPageCount();
+    this.postForm.reset();
   }
 
+  // お知らせを取得
   getInformation() {
     return this.service.information;
   }
-  getEvent(n:number) {
-    return this.service.get(((this.page)*this.CONSTANT_NUMBER)+n);
+
+  // イベント登録フォームの表示非表示
+  onClickBtnPostEvent() {
+    this.visiblePostForm = !this.visiblePostForm;
+    if(this.visiblePostForm){
+      this.btnMessage="閉じる";
+    }
+    else {
+      this.btnMessage = "イベントを追加";
+    }
   }
 
   /**

@@ -10,6 +10,11 @@ $cWhite: rgb(253, 253, 253);
     padding-top: 30px;
 }
 
+.post {
+    padding-top: 30px;
+    color: $cMain;
+}
+
 h1 {
     color: $cMain;
 }
@@ -45,4 +50,9 @@ td {
 }
 .box-s {
     min-width: 100px;
+}
+
+#btnDisplayPostForm{
+    margin-top: 30px;
+    min-width: 200px;
 }

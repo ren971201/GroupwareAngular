@@ -16,7 +16,7 @@ export class ProductService {
     }
 
     postProductData(item){
-        this.http.post('/api/v1/products/comit',item)
+        this.http.post('/api/v1/products/comit',item, {responseType: 'text'})
         .subscribe(
             (val) => {
                 console.log("POST call successful value returned in body", val);

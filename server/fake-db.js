@@ -4,7 +4,7 @@ class FakeDb {
 
     constructor() {
         this.products = [
-            {"event":"ESマネージャ会議", "schedule":"2020-9-27", "place":"本社ミーティングルーム4", "start":"10:00", "end":"12:00"},
+            {"event":"ESマネージャ会議", "schedule":"2020-09-27", "place":"本社ミーティングルーム4", "start":"10:00", "end":"12:00"},
             {"event":"システム1部勉強会(React)", "schedule":"2020-10-02", "place":"東京オフィス来客用", "start":"13:00", "end":"14:00"},
             {"event":"システム1部S1勉強会(サキ)", "schedule":"2020-10-08", "place":"サキ会議室", "start":"18:00", "end":"19:00"},
             {"event":"リクルートツール写真撮影", "schedule":"2020-10-30", "place":"TC RoomG", "start":"9:40", "end":"10:10"},

@@ -11,16 +11,16 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class TopComponent implements OnInit {
   readonly CONSTANT_NUMBER: number = 5; // 指定回数(1ページに表示する項目の数)を定義
-  page:number = 1;
-  products:any;
-  countData:number = 15;
-  event:string = "";
-  schedule:string = "";
-  place:string = "";
-  start:string = "";
-  end:string = "";
-  postForm:FormGroup;
-  listPlace = [
+  page:number = 1;// ページネーションの現在のページ
+  products:any;// 取得したデータを格納する
+  countData:number;// データの総数
+  event:string = "";// イベントフォームにバインディング
+  schedule:string = "";// 日程フォームにバインディング
+  place:string = "";// 場所フォームにバインディング
+  start:string = "";// 開始時刻フォームにバインディング
+  end:string = "";// 終了時刻フォームにバインディング
+  postForm:FormGroup;// イベント登録フォームのグループ
+  listPlace = [// 場所の一覧
     { name : "ミーティングルーム1" },
     { name : "ミーティングルーム2" },
     { name : "ミーティングルーム4" },
@@ -32,14 +32,15 @@ export class TopComponent implements OnInit {
     { name : "roomY" },
     { name : "roomG" }
   ]
-  visiblePostForm:boolean = false;
-  btnMessage:string = "イベントを追加";
+  visiblePostForm:boolean = false;// イベント登録フォームの表示非表示
+  btnMessage:string = "イベントを追加";// ボタンに表示するメッセージ
 
-  constructor(private service: MycheckService,private productService: ProductService) {
-    this.reloadPageCount();
+  constructor(private service: MycheckService,private productService: ProductService) { 
+    this.loadPageCount();// データ数を初期化
   }
 
   ngOnInit(): void {
+    this.loadPageCount();
     this.productService.getProductPage(String(this.page))
     .subscribe(
       (data)=>{
@@ -58,7 +59,7 @@ export class TopComponent implements OnInit {
   }
 
   // 総ページ数を取得
-  reloadPageCount(){
+  loadPageCount(){
     this.productService.getProducts()
     .subscribe(
       (data)=>{
@@ -70,7 +71,7 @@ export class TopComponent implements OnInit {
   }
 
   // ページネーションのページ切り替え時の処理
-  dataLoad(){
+  loadData(){
     this.productService.getProductPage(String(this.page))
     .subscribe(
       (data)=>{
@@ -81,7 +82,7 @@ export class TopComponent implements OnInit {
     );
   }
 
-  // データの追加処理
+  // データの追加
   postData(){
     const newData ={
       "event":this.event,
@@ -90,10 +91,10 @@ export class TopComponent implements OnInit {
       "start":this.start,
       "end":this.end
     };  
-    this.productService.postProductData(newData);
-    this.reloadPageCount();
+    this.productService.postProductData(newData);// データベースにポスト
     this.postForm.reset();
-    this.dataLoad();
+    this.loadPageCount();
+    this.loadData();
   }
 
   // お知らせを取得
@@ -112,6 +113,7 @@ export class TopComponent implements OnInit {
     }
   }
 
+  // 指定回数ループするための仮の配列
   /**
    * @param {index}
    * @returns {any[]}

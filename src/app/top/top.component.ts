@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MycheckService } from '../mycheck.service';
 import { ProductService } from '../shared/product.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-top',
@@ -13,13 +14,26 @@ export class TopComponent implements OnInit {
   page:number = 1;
   products:any;
   countData:number = 15;
-  item ={
-    "event":"勉強会",
-    "schedule":"2020/11/17",
-    "place":"roomY",
-    "start":"17:00",
-    "end":"18:00"
-  };
+  event:string = "";
+  schedule:string = "";
+  place:string = "";
+  start:string = "";
+  end:string = "";
+  postForm:FormGroup;
+  listPlace = [
+    { name : "ミーティングルーム1" },
+    { name : "ミーティングルーム2" },
+    { name : "ミーティングルーム4" },
+    { name : "応接室" },
+    { name : "特別会議室" },
+    { name : "休憩室" },
+    { name : "roomR" },
+    { name : "roomB" },
+    { name : "roomY" },
+    { name : "roomG" }
+  ]
+  visiblePostForm:boolean = false;
+  btnMessage:string = "イベントを追加";
 
   constructor(private service: MycheckService,private productService: ProductService) {
     this.reloadPageCount();
@@ -34,6 +48,13 @@ export class TopComponent implements OnInit {
       (err)=>{console.log('エラー:'+err);},
       ()=>{console.log('初期ロード完了');}
     );
+    this.postForm= new FormGroup({
+      event:new FormControl('', [Validators.required]),
+      schedule:new FormControl('', [Validators.required]),
+      place:new FormControl('', [Validators.required]),
+      start:new FormControl('', [Validators.required]),
+      end:new FormControl('', [Validators.required])
+    });
   }
 
   // 総ページ数を取得
@@ -62,15 +83,32 @@ export class TopComponent implements OnInit {
 
   // データの追加処理
   postData(){
-    this.productService.postProductData(this.item);
+    const newData ={
+      "event":this.event,
+      "schedule":this.schedule,
+      "place":this.place,
+      "start":this.start,
+      "end":this.end
+    };  
+    this.productService.postProductData(newData);
     this.reloadPageCount();
+    this.postForm.reset();
   }
 
+  // お知らせを取得
   getInformation() {
     return this.service.information;
   }
-  getEvent(n:number) {
-    return this.service.get(((this.page)*this.CONSTANT_NUMBER)+n);
+
+  // イベント登録フォームの表示非表示
+  onClickBtnPostEvent() {
+    this.visiblePostForm = !this.visiblePostForm;
+    if(this.visiblePostForm){
+      this.btnMessage="閉じる";
+    }
+    else {
+      this.btnMessage = "イベントを追加";
+    }
   }
 
   /**

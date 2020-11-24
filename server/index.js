@@ -1,16 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const config = require('./config/dev');
-const FakeDb = require('./fake-db');
+const SampleDb = require('./sample-db');
 
-const productRoutes = require('./routes/products')
+const productRoutes = require('./routes/events')
 
 mongoose.connect(config.DB_URI,{
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(
     () => {
-        const fakeDb = new FakeDb();
+        const fakeDb = new SampleDb();
         fakeDb.initDb();
     }
 )
@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-app.use('/api/v1/products', productRoutes);
+app.use('/api/v1/events', productRoutes);
 
 const PORT = process.env.PORT || '3001';
 

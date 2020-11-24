@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { from } from 'rxjs';
 import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators'
+import { map, filter } from 'rxjs/operators';
+import Event from '../domain/Event';
 
 class MyData {
   information:Information[] = [];
@@ -11,13 +12,6 @@ class MyData {
 
 class Information {
   item:string;
-}
-class Event {
-  event:string;
-  schedule:string;
-  place:string;
-  start:string;
-  end:string;
 }
 @Injectable({
   providedIn: 'root'

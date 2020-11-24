@@ -18,7 +18,7 @@
             <th class="box-s">開始時刻</th>
             <th class="box-s">終了時刻</th>
           </tr>
-          <tr *ngFor="let item of products">
+          <tr *ngFor="let item of listEvents">
             <td>{{item.event}}</td>
             <td>{{item.schedule}}</td>  
             <td>{{item.place}}</td>  
@@ -27,12 +27,12 @@
           </tr>
         </table>
         <hr>    
-        <ngb-pagination class="d-flex justify-content-start" [collectionSize]="countData" [pageSize]=CONSTANT_NUMBER [(page)]="page" [directionLinks]="false" (pageChange)=loadData()></ngb-pagination>
+        <ngb-pagination class="d-flex justify-content-start" [collectionSize]="countData" [pageSize]=limitPage [(page)]="page" [directionLinks]="false" (pageChange)=loadEventPage()></ngb-pagination>
     </div>
     <div class='post' *ngIf="visiblePostForm">
         <h3>イベント追加</h3>
         <hr>
-        <form [(formGroup)]="postForm" (submit)="postData()">
+        <form [(formGroup)]="postForm" (submit)="postEvent()">
           <label class="ef">イベント<br>
           <input type="text" placeholder="Event" class="box-l" formControlName="event" [(ngModel)]="event"/></label>
           <br>
@@ -55,4 +55,22 @@
         </form>
     </div>
     <button id="btnDisplayPostForm" (click)="onClickBtnPostEvent()">{{btnMessage}}</button>
+    <hr>
+    <button (click)="getEventsByDynamoDB()">データを取得</button>
+    <table>
+      <tr>
+        <th class="box-l">イベント</th>
+        <th class="box-m">日程</th>
+        <th class="box-l">場所</th>
+        <th class="box-s">開始時刻</th>
+        <th class="box-s">終了時刻</th>
+      </tr>
+      <tr *ngFor="let item of listEventsDynamoDB">
+        <td>{{item.event}}</td>
+        <td>{{item.schedule}}</td>  
+        <td>{{item.place}}</td>  
+        <td>{{item.start}}</td>  
+        <td>{{item.end}}</td>  
+      </tr>
+    </table>
   </div>

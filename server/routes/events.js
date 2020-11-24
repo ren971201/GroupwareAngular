@@ -1,32 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const Product = require('../model/product');
-const NUMBER = 5;
+const Product = require('../model/events');
 
-router.get('', function(req, res){
-    Product.find({})
-    .sort({"schedule":1})
-    .exec(function(err, foundProducts){
-        return res.json(foundProducts);
-    })
-})
-
-router.get('/:page', function(req, res){
-    const index = (parseInt(req.params.page)-1);
-    const skip = index * NUMBER;
+router.get('/', function(req, res){
     Product.find({})
     .sort({"schedule":1, "start":1, "end":1 })
-    .limit(NUMBER)
-    .skip(skip)
+    .limit(parseInt(req.query.limit))
+    .skip(parseInt(req.query.offset))
     .exec(function(err, foundProduct){
         if(err) {
             return res.status(422).send({errors: [{title: 'Product error', detail:'Product not found!'}]})
         }
         return res.json(foundProduct);
     })
-});
+})
 
-router.post('/comit',function(req, res){
+router.post('/',function(req, res){
     res.send('perfect');
 
     const newProduct = new Product(req.body);

@@ -1,26 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const Product = require('../model/events');
+const Event = require('../model/events');
 
 router.get('/', function(req, res){
-    Product.find({})
+    Event.find({})
     .sort({"schedule":1, "start":1, "end":1 })
     .limit(parseInt(req.query.limit))
     .skip(parseInt(req.query.offset))
-    .exec(function(err, foundProduct){
+    .exec(function(err, foundEvent){
         if(err) {
-            return res.status(422).send({errors: [{title: 'Product error', detail:'Product not found!'}]})
+            return res.status(422).send({errors: [{title: 'Event error', detail:'Event not found!'}]})
         }
-        return res.json(foundProduct);
+        return res.json(foundEvent);
     })
 })
 
 router.post('/',function(req, res){
     res.send('perfect');
 
-    const newProduct = new Product(req.body);
+    const newEvent = new Event(req.body);
 
-    newProduct.save();
+    newEvent.save();
 })
 
 module.exports = router;

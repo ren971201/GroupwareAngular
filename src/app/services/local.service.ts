@@ -16,7 +16,7 @@ class Information {
 @Injectable({
   providedIn: 'root'
 })
-export class MycheckService {
+export class LocalService {
   private mydata = new MyData();
 
   constructor(private client:HttpClient) {

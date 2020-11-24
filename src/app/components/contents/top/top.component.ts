@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MycheckService } from '../../../services/local.service';
+import { LocalService } from '../../../services/local.service';
 import { MongodbService } from '../../../services/mongodb.service';
 import { DynamodbService } from '../../../services/dynamodb.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
   selector: 'app-top',
   templateUrl: './top.component.html',
   styleUrls: ['./top.component.scss'],
-  providers: [MycheckService,MongodbService, DynamodbService],
+  providers: [LocalService,MongodbService, DynamodbService],
 })
 export class TopComponent implements OnInit {
   readonly limitPage: number = environment.limitPage; // 指定回数(1ページに表示する項目の数)を定義
@@ -28,7 +28,7 @@ export class TopComponent implements OnInit {
   listEvents;
   listEventsDynamoDB;
 
-  constructor(private service: MycheckService,private mongodbService: MongodbService, private dynamodbService: DynamodbService) { 
+  constructor(private localService: LocalService,private mongodbService: MongodbService, private dynamodbService: DynamodbService) { 
     this.getPageCount();// データ数を初期化
   }
 
@@ -93,7 +93,7 @@ export class TopComponent implements OnInit {
 
   // お知らせを取得
   getInformation() {
-    return this.service.information;
+    return this.localService.information;
   }
 
   // イベント登録フォームの表示非表示

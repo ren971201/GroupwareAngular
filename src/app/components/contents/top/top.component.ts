@@ -115,7 +115,7 @@ export class TopComponent implements OnInit {
       (val) => {
           const result = JSON.parse(val);
           this.listEventsDynamoDB = result.Items;
-          this.visibleList = !this.visibleList;
+          this.visibleList = true;
       },
       response => {
           console.log("call in error", response);

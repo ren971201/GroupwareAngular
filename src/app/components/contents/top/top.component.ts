@@ -5,6 +5,7 @@ import { DynamodbService } from '../../../services/dynamodb.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import Event from '../../../domain/Event'
 import { environment } from 'src/environments/environment';
+import { textSpanIsEmpty } from 'typescript';
 
 @Component({
   selector: 'app-top',
@@ -114,12 +115,13 @@ export class TopComponent implements OnInit {
       (val) => {
           const result = JSON.parse(val);
           this.listEventsDynamoDB = result.Items;
+          this.visibleList = !this.visibleList;
       },
       response => {
-          console.log("POST call in error", response);
+          console.log("call in error", response);
       },
       () => {
-          console.log("The POST observable is now completed.");
+          console.log("completed.");
       }
     );// これでリクエストが送信可能
 ;

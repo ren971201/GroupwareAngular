@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { from } from 'rxjs';
-import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
 import Event from '../domain/Event';
 
 class MyData {

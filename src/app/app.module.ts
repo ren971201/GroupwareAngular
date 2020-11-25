@@ -15,6 +15,7 @@ import { LoginComponent } from './components/contents/login/login.component';
 import { RegisterComponent } from './components/contents/register/register.component';
 import { VerifyComponent } from './components/contents/verify/verify.component';
 import { DynamodbService } from './services/dynamodb.service';
+import { ContentsComponent } from './components/layout/contents/contents.component';
 
 const routes:Routes = [
   { path: '', component: TopComponent},
@@ -32,7 +33,8 @@ const routes:Routes = [
     TopComponent,
     LoginComponent,
     RegisterComponent,
-    VerifyComponent
+    VerifyComponent,
+    ContentsComponent
   ],
   imports: [
     BrowserModule,

@@ -58,7 +58,7 @@
     <button id="btnDisplayPostForm" (click)="onClickBtnPostEvent()">{{btnMessage}}</button>
     <hr>
     <h4>DynamoDB</h4>
-    <button (click)="getEventsByDynamoDB()">データを取得</button>
+    <button (click)="getEventsByDynamoDB()" *ngIf="!visibleList">データを取得</button>
     <table *ngIf="visibleList">
       <tr>
         <th class="box-l">イベント</th>

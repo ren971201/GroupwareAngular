@@ -10,6 +10,7 @@
     </div>
     <div class='event'>
         <h1>イベント</h1>
+        <h4>MongoDB</h4>
         <table>
           <tr>
             <th class="box-l">イベント</th>
@@ -56,8 +57,9 @@
     </div>
     <button id="btnDisplayPostForm" (click)="onClickBtnPostEvent()">{{btnMessage}}</button>
     <hr>
+    <h4>DynamoDB</h4>
     <button (click)="getEventsByDynamoDB()">データを取得</button>
-    <table>
+    <table *ngIf="visibleList">
       <tr>
         <th class="box-l">イベント</th>
         <th class="box-m">日程</th>

@@ -27,6 +27,7 @@ export class TopComponent implements OnInit {
   btnMessage:string = "イベントを追加";// ボタンに表示するメッセージ
   listEvents;
   listEventsDynamoDB;
+  visibleList:boolean = false;
 
   constructor(private localService: LocalService,private mongodbService: MongodbService, private dynamodbService: DynamodbService) { 
     this.getPageCount();// データ数を初期化

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MycheckService } from './mycheck.service';
+import { DynamodbService } from './dynamodb.service';
 
-describe('MycheckService', () => {
-  let service: MycheckService;
+describe('DynamodbService', () => {
+  let service: DynamodbService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(MycheckService);
+    service = TestBed.inject(DynamodbService);
   });
 
   it('should be created', () => {

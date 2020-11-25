@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { MycheckService } from '../mycheck.service';
-import { ProductService } from '../shared/product.service';
+import { LocalService } from '../../../services/local.service';
+import { MongodbService } from '../../../services/mongodb.service';
+import { DynamodbService } from '../../../services/dynamodb.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import Event from '../../../domain/Event'
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-top',
   templateUrl: './top.component.html',
   styleUrls: ['./top.component.scss'],
-  providers: [MycheckService,ProductService],
+  providers: [LocalService,MongodbService, DynamodbService],
 })
 export class TopComponent implements OnInit {
-  readonly CONSTANT_NUMBER: number = 5; // 指定回数(1ページに表示する項目の数)を定義
+  readonly limitPage: number = environment.limitPage; // 指定回数(1ページに表示する項目の数)を定義
   page:number = 1;// ページネーションの現在のページ
-  products:any;// 取得したデータを格納する
   countData:number;// データの総数
   event:string = "";// イベントフォームにバインディング
   schedule:string = "";// 日程フォームにバインディング
@@ -20,31 +22,22 @@ export class TopComponent implements OnInit {
   start:string = "";// 開始時刻フォームにバインディング
   end:string = "";// 終了時刻フォームにバインディング
   postForm:FormGroup;// イベント登録フォームのグループ
-  listPlace = [// 場所の一覧
-    { name : "ミーティングルーム1" },
-    { name : "ミーティングルーム2" },
-    { name : "ミーティングルーム4" },
-    { name : "応接室" },
-    { name : "特別会議室" },
-    { name : "休憩室" },
-    { name : "roomR" },
-    { name : "roomB" },
-    { name : "roomY" },
-    { name : "roomG" }
-  ]
+  listPlace = environment.listPlace.slice(0,environment.listPlace.length);// 場所の一覧
   visiblePostForm:boolean = false;// イベント登録フォームの表示非表示
   btnMessage:string = "イベントを追加";// ボタンに表示するメッセージ
+  listEvents;
+  listEventsDynamoDB;
 
-  constructor(private service: MycheckService,private productService: ProductService) { 
-    this.loadPageCount();// データ数を初期化
+  constructor(private localService: LocalService,private mongodbService: MongodbService, private dynamodbService: DynamodbService) { 
+    this.getPageCount();// データ数を初期化
   }
 
   ngOnInit(): void {
-    this.loadPageCount();
-    this.productService.getProductPage(String(this.page))
+    this.getPageCount();
+    this.mongodbService.getEventPage(this.page)
     .subscribe(
-      (data)=>{
-        this.products = data;
+      (result)=>{
+        this.listEvents = result;
       },
       (err)=>{console.log('エラー:'+err);},
       ()=>{console.log('初期ロード完了');}
@@ -59,11 +52,11 @@ export class TopComponent implements OnInit {
   }
 
   // 総ページ数を取得
-  loadPageCount(){
-    this.productService.getProducts()
+  getPageCount(){
+    this.mongodbService.getEvents()
     .subscribe(
-      (data)=>{
-        this.countData = data.length;
+      (result)=>{
+        this.countData = result.length;
       },
       (err)=>{console.log('エラー:'+err);},
       ()=>{console.log('ロード完了');}
@@ -71,11 +64,11 @@ export class TopComponent implements OnInit {
   }
 
   // ページネーションのページ切り替え時の処理
-  loadData(){
-    this.productService.getProductPage(String(this.page))
+  loadEventPage(){
+    this.mongodbService.getEventPage(this.page)
     .subscribe(
-      (data)=>{
-        this.products = data;
+      (result)=>{
+        this.listEvents = result;
       },
       (err)=>{console.log('エラー:'+err);},
       ()=>{console.log('データ更新');}
@@ -83,23 +76,24 @@ export class TopComponent implements OnInit {
   }
 
   // データの追加
-  postData(){
-    const newData ={
+  postEvent(){
+    const newEvent:Event ={
       "event":this.event,
       "schedule":this.schedule,
       "place":this.place,
       "start":this.start,
       "end":this.end
-    };  
-    this.productService.postProductData(newData);// データベースにポスト
+    };
+    console.log(newEvent);  
+    this.mongodbService.postEventData(newEvent);// データベースにポスト
     this.postForm.reset();
-    this.loadPageCount();
-    this.loadData();
+    this.getPageCount();
+    this.loadEventPage();
   }
 
   // お知らせを取得
   getInformation() {
-    return this.service.information;
+    return this.localService.information;
   }
 
   // イベント登録フォームの表示非表示
@@ -111,6 +105,23 @@ export class TopComponent implements OnInit {
     else {
       this.btnMessage = "イベントを追加";
     }
+  }
+
+  getEventsByDynamoDB() {
+    this.dynamodbService.getEvents()
+    .subscribe(
+      (val) => {
+          const result = JSON.parse(val);
+          this.listEventsDynamoDB = result.Items;
+      },
+      response => {
+          console.log("POST call in error", response);
+      },
+      () => {
+          console.log("The POST observable is now completed.");
+      }
+    );// これでリクエストが送信可能
+;
   }
 
   // 指定回数ループするための仮の配列

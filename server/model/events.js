@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
  
-const ProductSchema = new Schema({
+const EventSchema = new Schema({
   event: { type: String, required: true },
   schedule: String,
   place: String,
@@ -9,4 +9,4 @@ const ProductSchema = new Schema({
   end: String
 });
 
-module.exports = mongoose.model('Product', ProductSchema);
+module.exports = mongoose.model('Event', EventSchema);

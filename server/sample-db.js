@@ -1,9 +1,9 @@
-const Product = require('./model/product');
+const Event = require('./model/events');
 
-class FakeDb {
+class SampleDb {
 
     constructor() {
-        this.products = [
+        this.events = [
             {"event":"ESマネージャ会議", "schedule":"2020-09-27", "place":"本社ミーティングルーム4", "start":"10:00", "end":"12:00"},
             {"event":"システム1部勉強会(React)", "schedule":"2020-10-02", "place":"東京オフィス来客用", "start":"13:00", "end":"14:00"},
             {"event":"システム1部S1勉強会(サキ)", "schedule":"2020-10-08", "place":"サキ会議室", "start":"18:00", "end":"19:00"},
@@ -24,25 +24,25 @@ class FakeDb {
 
     async initDb() {
         await this.cleanDb();
-        this.pushProductsToDb();
+        this.pushEventsToDb();
     }
 
     async cleanDb() {
-        await Product.deleteMany({});
+        await Event.deleteMany({});
     }
 
-    pushProductsToDb() {
-        this.products.forEach(
-            (product) => {
-                const newProduct = new Product(product);
-                newProduct.save();
+    pushEventsToDb() {
+        this.events.forEach(
+            (event) => {
+                const newEvent = new Event(event);
+                newEvent.save();
             }
         )
     }
 
     seeDb() {
-        this.pushProductsToDb()
+        this.pushEventsToDb()
     }
 }
 
-module.exports = FakeDb;
+module.exports = SampleDb;

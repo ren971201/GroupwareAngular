@@ -11,6 +11,8 @@ export const environment = {
     { name : "roomR" },
     { name : "roomB" },
     { name : "roomY" },
-    { name : "roomG" }
+    { name : "roomG" },
+    { name : "なし" },
+    { name : "未定" }
   ]
 };

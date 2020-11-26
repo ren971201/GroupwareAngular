@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LocalService } from '../../../services/local.service';
 import { MongodbService } from '../../../services/mongodb.service';
 import { DynamodbService } from '../../../services/dynamodb.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import Event from '../../../domain/Event'
 import { environment } from 'src/environments/environment';
 import { textSpanIsEmpty } from 'typescript';
@@ -15,27 +15,29 @@ import { textSpanIsEmpty } from 'typescript';
 })
 export class TopComponent implements OnInit {
   readonly limitPage: number = environment.limitPage; // 指定回数(1ページに表示する項目の数)を定義
-  page:number = 1;// ページネーションの現在のページ
-  countData:number;// データの総数
-  event:string = "";// イベントフォームにバインディング
-  schedule:string = "";// 日程フォームにバインディング
-  place:string = "";// 場所フォームにバインディング
-  start:string = "";// 開始時刻フォームにバインディング
-  end:string = "";// 終了時刻フォームにバインディング
+  page:number;// ページネーションの現在のページ
+  tableSize:number;// データの総数
   postForm:FormGroup;// イベント登録フォームのグループ
   listPlace = environment.listPlace.slice(0,environment.listPlace.length);// 場所の一覧
-  visiblePostForm:boolean = false;// イベント登録フォームの表示非表示
-  btnMessage:string = "イベントを追加";// ボタンに表示するメッセージ
-  listEvents;
-  listEventsDynamoDB;
-  visibleList:boolean = false;
+  visiblePostForm:boolean = false;// イベント登録フォームの表示状態
+  btnMessage:string;// ボタンに表示するメッセージ
+  listEvents:object;// mongoDBからの取得結果
+  listEventsDynamoDB:object;// DynamoDBからの取得結果
+  visibleList:boolean;// DynamoDBから取得した結果の表示状態
 
-  constructor(private localService: LocalService,private mongodbService: MongodbService, private dynamodbService: DynamodbService) { 
-    this.getPageCount();// データ数を初期化
-  }
+  constructor(
+    private localService: LocalService,
+    private mongodbService: MongodbService,
+    private dynamodbService: DynamodbService,
+    private fb: FormBuilder
+  ){}
 
   ngOnInit(): void {
-    this.getPageCount();
+    this.page = 1;
+    this.visiblePostForm = false;
+    this.visibleList = false;
+    this.btnMessage = "イベントを追加";
+    this.getTableSize();
     this.mongodbService.getEventPage(this.page)
     .subscribe(
       (result)=>{
@@ -44,24 +46,24 @@ export class TopComponent implements OnInit {
       (err)=>{console.log('エラー:'+err);},
       ()=>{console.log('初期ロード完了');}
     );
-    this.postForm= new FormGroup({
-      event:new FormControl('', [Validators.required]),
-      schedule:new FormControl('', [Validators.required]),
-      place:new FormControl('', [Validators.required]),
-      start:new FormControl('', [Validators.required]),
-      end:new FormControl('', [Validators.required])
+    this.postForm= this.fb.group({
+      event:['', Validators.required],
+      schedule:['', Validators.required],
+      place:['', Validators.required],
+      start:['', Validators.required],
+      end:['', Validators.required]
     });
   }
 
-  // 総ページ数を取得
-  getPageCount(){
-    this.mongodbService.getEvents()
+  // 総数を取得
+  getTableSize(){
+    this.mongodbService.getTabelSize()
     .subscribe(
       (result)=>{
-        this.countData = result.length;
+        this.tableSize = result;
       },
       (err)=>{console.log('エラー:'+err);},
-      ()=>{console.log('ロード完了');}
+      ()=>{console.log('テーブルのサイズを取得完了');}
     );
   }
 
@@ -79,18 +81,10 @@ export class TopComponent implements OnInit {
 
   // データの追加
   postEvent(){
-    const newEvent:Event ={
-      "event":this.event,
-      "schedule":this.schedule,
-      "place":this.place,
-      "start":this.start,
-      "end":this.end
-    };
-    console.log(newEvent);  
-    this.mongodbService.postEventData(newEvent);// データベースにポスト
-    this.postForm.reset();
-    this.getPageCount();
-    this.loadEventPage();
+    const postFormValue:Event= this.postForm.value;// フォームに入力された値を登録用に変換
+    this.mongodbService.postEventData(postFormValue);// データベースにポスト
+    this.postForm.reset();// フォームを空に
+    this.ngOnInit();// コンポーネントを更新
   }
 
   // お知らせを取得

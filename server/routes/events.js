@@ -23,4 +23,14 @@ router.post('/',function(req, res){
     newEvent.save();
 })
 
+router.get('/size', function(req, res){
+    Event.countDocuments({})
+    .exec(function(err, size){
+        if(err) {
+            return res.status(422).send({errors: [{title: 'Event error', detail:'Event not found!'}]})
+        }
+        return res.json(size);
+    })
+})
+
 module.exports = router;

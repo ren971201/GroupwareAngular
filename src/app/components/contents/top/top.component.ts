@@ -16,7 +16,7 @@ import { textSpanIsEmpty } from 'typescript';
 export class TopComponent implements OnInit {
   readonly limitPage: number = environment.limitPage; // 指定回数(1ページに表示する項目の数)を定義
   page:number = 1;// ページネーションの現在のページ
-  countData:number;// データの総数
+  tableSize:number;// データの総数
   postFormValue:Event= <Event>{};// イベント追加フォームにバインディング
   postForm:FormGroup;// イベント登録フォームのグループ
   listPlace = environment.listPlace.slice(0,environment.listPlace.length);// 場所の一覧
@@ -27,11 +27,11 @@ export class TopComponent implements OnInit {
   visibleList:boolean = false;
 
   constructor(private localService: LocalService,private mongodbService: MongodbService, private dynamodbService: DynamodbService) { 
-    this.getPageCount();// データ数を初期化
+    this.getTableSize();// データ数を初期化
   }
 
   ngOnInit(): void {
-    this.getPageCount();
+    this.getTableSize();
     this.mongodbService.getEventPage(this.page)
     .subscribe(
       (result)=>{
@@ -49,15 +49,15 @@ export class TopComponent implements OnInit {
     });
   }
 
-  // 総ページ数を取得
-  getPageCount(){
-    this.mongodbService.getEvents()
+  // 総数を取得
+  getTableSize(){
+    this.mongodbService.getTabelSize()
     .subscribe(
       (result)=>{
-        this.countData = result.length;
+        this.tableSize = result;
       },
       (err)=>{console.log('エラー:'+err);},
-      ()=>{console.log('ロード完了');}
+      ()=>{console.log('テーブルのサイズを取得完了');}
     );
   }
 
@@ -77,7 +77,7 @@ export class TopComponent implements OnInit {
   postEvent(){
     this.mongodbService.postEventData(this.postFormValue);// データベースにポスト
     this.postForm.reset();
-    this.getPageCount();
+    this.getTableSize();
     this.loadEventPage();
   }
 

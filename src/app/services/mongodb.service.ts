@@ -31,4 +31,8 @@ export class MongodbService {
         );// これでリクエストが送信可能
     
     }
+
+    getTabelSize(): Observable<any> {
+        return this.http.get('/api/v1/events/size');
+    }
 }

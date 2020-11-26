@@ -28,7 +28,7 @@
           </tr>
         </table>
         <hr>    
-        <ngb-pagination class="d-flex justify-content-start" [collectionSize]="countData" [pageSize]=limitPage [(page)]="page" [directionLinks]="false" (pageChange)=loadEventPage()></ngb-pagination>
+        <ngb-pagination class="d-flex justify-content-start" [collectionSize]="tableSize" [pageSize]="limitPage" [(page)]="page" [directionLinks]="false" (pageChange)=loadEventPage()></ngb-pagination>
     </div>
     <div class='post' *ngIf="visiblePostForm">
         <h3>イベント追加</h3>

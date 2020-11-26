@@ -17,11 +17,7 @@ export class TopComponent implements OnInit {
   readonly limitPage: number = environment.limitPage; // 指定回数(1ページに表示する項目の数)を定義
   page:number = 1;// ページネーションの現在のページ
   countData:number;// データの総数
-  event:string = "";// イベントフォームにバインディング
-  schedule:string = "";// 日程フォームにバインディング
-  place:string = "";// 場所フォームにバインディング
-  start:string = "";// 開始時刻フォームにバインディング
-  end:string = "";// 終了時刻フォームにバインディング
+  postFormValue:Event= <Event>{};// イベント追加フォームにバインディング
   postForm:FormGroup;// イベント登録フォームのグループ
   listPlace = environment.listPlace.slice(0,environment.listPlace.length);// 場所の一覧
   visiblePostForm:boolean = false;// イベント登録フォームの表示非表示
@@ -79,15 +75,7 @@ export class TopComponent implements OnInit {
 
   // データの追加
   postEvent(){
-    const newEvent:Event ={
-      "event":this.event,
-      "schedule":this.schedule,
-      "place":this.place,
-      "start":this.start,
-      "end":this.end
-    };
-    console.log(newEvent);  
-    this.mongodbService.postEventData(newEvent);// データベースにポスト
+    this.mongodbService.postEventData(this.postFormValue);// データベースにポスト
     this.postForm.reset();
     this.getPageCount();
     this.loadEventPage();

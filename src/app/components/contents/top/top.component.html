@@ -35,22 +35,22 @@
         <hr>
         <form [(formGroup)]="postForm" (submit)="postEvent()">
           <label class="ef">イベント<br>
-          <input type="text" placeholder="Event" class="box-l" formControlName="event" [(ngModel)]="event"/></label>
+          <input type="text" placeholder="Event" class="box-l" formControlName="event" [(ngModel)]="postFormValue.event"/></label>
           <br>
           <label>日程<br>
-          <input type="date" placeholder="Schedule" class="box-l" formControlName="schedule" [(ngModel)]="schedule"/></label>
+          <input type="date" placeholder="Schedule" class="box-l" formControlName="schedule" [(ngModel)]="postFormValue.schedule"/></label>
           <br>
           <label>場所<br>
-          <select formControlName="place"  class="box-l" [(ngModel)]="place">
+          <select formControlName="place"  class="box-l" [(ngModel)]="postFormValue.place">
             <option value='' disabled selected style='display:none;'>Place</option>
             <option *ngFor="let item of listPlace" [ngValue]="item.name">{{item.name}}</option>
           </select></label>
           <br>
           <label>開始時刻<br>
-          <input type="time" placeholder="Start" class="box-s" formControlName="start" [(ngModel)]="start"/></label>
+          <input type="time" placeholder="Start" class="box-s" formControlName="start" [(ngModel)]="postFormValue.start"/></label>
           <br>
           <label>終了時刻<br>
-          <input type="time" placeholder="End" class="box-s" formControlName="end" [(ngModel)]="end"/></label>
+          <input type="time" placeholder="End" class="box-s" formControlName="end" [(ngModel)]="postFormValue.end"/></label>
           <br>
           <input type="submit" value="登録"  class='submit' [disabled]="postForm.invalid"/>
         </form>

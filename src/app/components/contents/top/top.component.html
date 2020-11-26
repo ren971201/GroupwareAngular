@@ -30,7 +30,7 @@
         <hr>    
         <ngb-pagination class="d-flex justify-content-start" [collectionSize]="tableSize" [pageSize]="limitPage" [(page)]="page" [directionLinks]="false" (pageChange)=loadEventPage()></ngb-pagination>
     </div>
-    <div class='post' *ngIf="visiblePostForm">
+    <div class='post' [hidden]="!visiblePostForm">
         <h3>イベント追加</h3>
         <hr>
         <form [(formGroup)]="postForm" (ngSubmit)="postEvent()">

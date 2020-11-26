@@ -26,8 +26,8 @@ export class TopComponent implements OnInit {
   listPlace = environment.listPlace.slice(0,environment.listPlace.length);// 場所の一覧
   visiblePostForm:boolean = false;// イベント登録フォームの表示非表示
   btnMessage:string = "イベントを追加";// ボタンに表示するメッセージ
-  listEvents;
-  listEventsDynamoDB;
+  listEvents:object;
+  listEventsDynamoDB:object;
   visibleList:boolean = false;
 
   constructor(private localService: LocalService,private mongodbService: MongodbService, private dynamodbService: DynamodbService) { 

@@ -2,10 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import EventService from './eventService';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+  })
 
-export class MongodbService {
+export class EventMongodbService implements EventService{
     constructor(private http: HttpClient){ }
 
     getEvents(): Observable<any> {
@@ -32,7 +35,7 @@ export class MongodbService {
     
     }
 
-    getTabelSize(): Observable<any> {
+    getTableSize():Observable<any> {
         return this.http.get('/api/v1/events/size');
     }
 }

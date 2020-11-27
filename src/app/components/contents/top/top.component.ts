@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { LocalService } from '../../../services/local.service';
-import { MongodbService } from '../../../services/mongodb.service';
-import { DynamodbService } from '../../../services/dynamodb.service';
+import { LocalService } from '../../../services/information/local.service';
+import { EventMongodbService } from '../../../services/event/mongodb.service';
+import { EventDynamodbService } from '../../../services/event/dynamodb.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import Event from '../../../domain/Event'
+import Event from '../../../domain/event'
 import { environment } from 'src/environments/environment';
-import { textSpanIsEmpty } from 'typescript';
+import EventService from 'src/app/services/event/EventService';
+import InformationService from 'src/app/services/information/informationService';
 
 @Component({
   selector: 'app-top',
   templateUrl: './top.component.html',
   styleUrls: ['./top.component.scss'],
-  providers: [LocalService,MongodbService, DynamodbService],
+  providers: [LocalService,EventMongodbService, EventDynamodbService],
 })
 export class TopComponent implements OnInit {
   readonly limitPage: number = environment.limitPage; // 指定回数(1ページに表示する項目の数)を定義
@@ -26,9 +27,8 @@ export class TopComponent implements OnInit {
   visibleList:boolean;// DynamoDBから取得した結果の表示状態
 
   constructor(
-    private localService: LocalService,
-    private mongodbService: MongodbService,
-    private dynamodbService: DynamodbService,
+    private informationService: InformationService,
+    private eventService: EventService,
     private fb: FormBuilder
   ){}
 
@@ -38,7 +38,7 @@ export class TopComponent implements OnInit {
     this.visibleList = false;
     this.btnMessage = "イベントを追加";
     this.getTableSize();
-    this.mongodbService.getEventPage(this.page)
+    this.eventService.getEventPage(this.page)
     .subscribe(
       (result)=>{
         this.listEvents = result;
@@ -57,7 +57,7 @@ export class TopComponent implements OnInit {
 
   // 総数を取得
   getTableSize(){
-    this.mongodbService.getTabelSize()
+    this.eventService.getTableSize()
     .subscribe(
       (result)=>{
         this.tableSize = result;
@@ -69,7 +69,7 @@ export class TopComponent implements OnInit {
 
   // ページネーションのページ切り替え時の処理
   loadEventPage(){
-    this.mongodbService.getEventPage(this.page)
+    this.eventService.getEventPage(this.page)
     .subscribe(
       (result)=>{
         this.listEvents = result;
@@ -82,14 +82,14 @@ export class TopComponent implements OnInit {
   // データの追加
   postEvent(){
     const postFormValue:Event= this.postForm.value;// フォームに入力された値を登録用に変換
-    this.mongodbService.postEventData(postFormValue);// データベースにポスト
+    this.eventService.postEventData(postFormValue);// データベースにポスト
     this.postForm.reset();// フォームを空に
     this.ngOnInit();// コンポーネントを更新
   }
 
   // お知らせを取得
   getInformation() {
-    return this.localService.information;
+    return this.informationService.getInformation;
   }
 
   // イベント登録フォームの表示非表示
@@ -104,7 +104,7 @@ export class TopComponent implements OnInit {
   }
 
   getEventsByDynamoDB() {
-    this.dynamodbService.getEvents()
+    this.eventService.getEvents()
     .subscribe(
       (val) => {
           const result = JSON.parse(val);

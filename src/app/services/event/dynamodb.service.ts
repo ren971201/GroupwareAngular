@@ -1,10 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { from, Observable } from 'rxjs';
+import Event from 'src/app/domain/event';
+import EventService from './EventService';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DynamodbService {
+export class EventDynamodbService implements EventService {
 
   constructor(private http: HttpClient) { }
 
@@ -14,5 +17,14 @@ export class DynamodbService {
         "OperationType": "SCAN"
     },
     {responseType: 'text'});
+  }
+
+  getEventPage(page:number): Observable<any>{
+    return from([0]);
+  }
+  postEventData(event:Event): void{}
+  
+  getTableSize(): Observable<any>{
+    return from([0]);
   }
 }

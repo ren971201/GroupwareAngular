@@ -1,18 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { LocalService } from '../../../services/information/local.service';
-import { EventMongodbService } from '../../../services/event/mongodb.service';
-import { EventDynamodbService } from '../../../services/event/dynamodb.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import Event from '../../../domain/event'
 import { environment } from 'src/environments/environment';
-import EventService from 'src/app/services/event/EventService';
-import InformationService from 'src/app/services/information/informationService';
+import { EventServiceProvider, EVENT_SERVICE } from 'src/app/services/event/event.service.provider';
+import EventService from '../../../services/event/eventService'
 
 @Component({
   selector: 'app-top',
   templateUrl: './top.component.html',
   styleUrls: ['./top.component.scss'],
-  providers: [LocalService,EventMongodbService, EventDynamodbService],
+  providers: [EventServiceProvider]
 })
 export class TopComponent implements OnInit {
   readonly limitPage: number = environment.limitPage; // 指定回数(1ページに表示する項目の数)を定義
@@ -26,9 +24,8 @@ export class TopComponent implements OnInit {
   listEventsDynamoDB:object;// DynamoDBからの取得結果
   visibleList:boolean;// DynamoDBから取得した結果の表示状態
 
-  constructor(
-    private informationService: InformationService,
-    private eventService: EventService,
+  constructor(@Inject(EVENT_SERVICE) private eventService: EventService,
+    private informationService: LocalService, 
     private fb: FormBuilder
   ){}
 
@@ -118,7 +115,6 @@ export class TopComponent implements OnInit {
           console.log("completed.");
       }
     );// これでリクエストが送信可能
-;
   }
 
   // 指定回数ループするための仮の配列

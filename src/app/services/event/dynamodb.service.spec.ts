@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DynamodbService } from './dynamodb.service';
+import { DynamodbService } from './eventDynamodb.service';
 
 describe('DynamodbService', () => {
   let service: DynamodbService;

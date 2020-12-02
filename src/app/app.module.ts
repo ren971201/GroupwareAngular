@@ -4,9 +4,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { EventMongodbService } from './services/event/mongodb.service'
+import { EventMongodbService } from './services/event/eventMongodb.service'
 import { LayoutComponent } from './components/layout/layout.component';
 import { HeaderComponent } from './components/layout/header/header.component';
 import { SideMenuComponent } from './components/layout/side-menu/side-menu.component';
@@ -14,8 +14,9 @@ import { TopComponent } from './components/contents/top/top.component';
 import { LoginComponent } from './components/contents/login/login.component';
 import { RegisterComponent } from './components/contents/register/register.component';
 import { VerifyComponent } from './components/contents/verify/verify.component';
-import { EventDynamodbService } from './services/event/dynamodb.service';
+import { EventDynamodbService } from './services/event/eventDynamodb.service';
 import { ContentsComponent } from './components/layout/contents/contents.component';
+import { EventServiceProvider } from './services/event/event.service.provider';
 
 const routes:Routes = [
   { path: '', component: TopComponent},
@@ -44,7 +45,7 @@ const routes:Routes = [
     RouterModule.forRoot(routes),
     NgbModule
   ],
-  providers: [EventMongodbService, EventDynamodbService],
+  providers: [EventServiceProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

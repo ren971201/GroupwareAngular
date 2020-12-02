@@ -55,27 +55,27 @@
               <input type="submit" value="登録"  class='submit' [disabled]="postForm.invalid"/>
             </form>
         </div>
+        <button id="btnDisplayPostForm" (click)="onClickBtnPostEvent()">{{btnMessage}}</button>
       </div>
-    </div>
-    <button id="btnDisplayPostForm" (click)="onClickBtnPostEvent()">{{btnMessage}}</button>
-    <div class="dynamoDB" *ngIf='!isUsingMongoDB'>
-      <h4>DynamoDB</h4>
-      <button (click)="getEventsByDynamoDB()" *ngIf="!isVisibleList">データを取得</button>
-      <table *ngIf="isVisibleList">
-        <tr>
-          <th class="box-l">イベント</th>
-          <th class="box-m">日程</th>
-          <th class="box-l">場所</th>
-          <th class="box-s">開始時刻</th>
-          <th class="box-s">終了時刻</th>
-        </tr>
-        <tr *ngFor="let item of listEventsDynamoDB">
-          <td>{{item.event}}</td>
-          <td>{{item.schedule}}</td>  
-          <td>{{item.place}}</td>  
-          <td>{{item.start}}</td>  
-          <td>{{item.end}}</td>  
-        </tr>
-      </table>
+      <div class="dynamoDB" *ngIf='!isUsingMongoDB'>
+        <h4>DynamoDB</h4>
+        <button (click)="getEventsByDynamoDB()" *ngIf="!isVisibleList">データを取得</button>
+        <table *ngIf="isVisibleList">
+          <tr>
+            <th class="box-l">イベント</th>
+            <th class="box-m">日程</th>
+            <th class="box-l">場所</th>
+            <th class="box-s">開始時刻</th>
+            <th class="box-s">終了時刻</th>
+          </tr>
+          <tr *ngFor="let item of listEventsDynamoDB">
+            <td>{{item.event}}</td>
+            <td>{{item.schedule}}</td>  
+            <td>{{item.place}}</td>  
+            <td>{{item.start}}</td>  
+            <td>{{item.end}}</td>  
+          </tr>
+        </table>
+      </div>
     </div>
   </div>

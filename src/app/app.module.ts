@@ -14,7 +14,7 @@ import { LoginComponent } from './components/contents/login/login.component';
 import { RegisterComponent } from './components/contents/register/register.component';
 import { VerifyComponent } from './components/contents/verify/verify.component';
 import { ContentsComponent } from './components/layout/contents/contents.component';
-import { EventServiceProvider } from './services/event/event.service.provider';
+import { useMongoDB, USE_MONGODB } from './app.config';
 
 const routes:Routes = [
   { path: '', component: TopComponent},
@@ -43,6 +43,7 @@ const routes:Routes = [
     RouterModule.forRoot(routes),
     NgbModule
   ],
+  providers:[{ provide:USE_MONGODB, useValue:useMongoDB }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

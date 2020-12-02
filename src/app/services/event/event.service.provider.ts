@@ -1,23 +1,15 @@
-import { EventMongodbService } from './eventMongodb.service';
+import { EventServiceMongodb } from './eventMongodb.service';
 import { HttpClient } from '@angular/common/http';
-import { EventDynamodbService } from './eventDynamodb.service';
+import { EventServiceDynamodb } from './eventDynamodb.service';
 import { USE_MONGODB } from 'src/app/app.config';
-import { InjectionToken } from '@angular/core';
-import EventService from './eventService';
+import { EventService } from './event.service';
 
 const EventServiceFactory = (useMongoDB:boolean,http:HttpClient) => {                
-    return useMongoDB ? new EventMongodbService(http) : new EventDynamodbService(http);
+    return useMongoDB ? new EventServiceMongodb(http) : new EventServiceDynamodb(http);
 }
 
-export const EVENT_SERVICE = new InjectionToken<EventService>('event.service.provider');
-
 export const EventServiceProvider = {
-    provide: EVENT_SERVICE,
+    provide: EventService,
     useFactory: EventServiceFactory,
     deps: [USE_MONGODB, HttpClient]
 }
-
-
-// {provide:'USE_FAKE', useValue: true},             
-// {provide: 'ProductService', ,                  
-//      deps: ['USE_FAKE',HttpClient]}           

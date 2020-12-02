@@ -3,8 +3,8 @@ import { LocalService } from '../../../services/information/local.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import Event from '../../../domain/event'
 import { environment } from 'src/environments/environment';
-import { EventServiceProvider, EVENT_SERVICE } from 'src/app/services/event/event.service.provider';
-import EventService from '../../../services/event/eventService'
+import { EventServiceProvider } from 'src/app/services/event/event.service.provider';
+import { EventService } from '../../../services/event/event.service'
 
 @Component({
   selector: 'app-top',
@@ -24,7 +24,8 @@ export class TopComponent implements OnInit {
   listEventsDynamoDB:object;// DynamoDBからの取得結果
   visibleList:boolean;// DynamoDBから取得した結果の表示状態
 
-  constructor(@Inject(EVENT_SERVICE) private eventService: EventService,
+  constructor(
+    private eventService: EventService,
     private informationService: LocalService, 
     private fb: FormBuilder
   ){}

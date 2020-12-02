@@ -1,16 +1,25 @@
-import { Injectable } from "@angular/core";
-import { USE_MONGODB } from 'src/app/app.config';
-import { EventDynamodbService } from './eventDynamodb.service';
-import { EventMongodbService } from './eventMongodb.service';
-import EventService from './eventService';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { from, Observable } from 'rxjs';
+import Event from '../../domain/Event'
 
 @Injectable({
-    providedIn:'root'
+    providedIn: 'root'
 })
+export class EventService {
+    constructor(protected http: HttpClient) { }
 
-export class EventDBService {
-    eventService:EventService;
-    constructor(private eventMongodb:EventMongodbService, private eventDynamodb:EventDynamodbService){
-        this.eventService = USE_MONGODB? eventMongodb : eventDynamodb;
+    getEvents(): Observable<any>{
+        return from([0]);
     }
-}
+  
+    getEventPage(page:number): Observable<any>{
+      return from([0]);
+    }
+    postEventData(event:Event): void{}
+    
+    getTableSize(): Observable<any>{
+      return from([0]);
+    }
+  }
+  

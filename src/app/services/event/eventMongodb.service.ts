@@ -2,16 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import EventService from './eventService';
+import { EventService } from './event.service';
 import Event from '../../domain/event';
 
 @Injectable({
     providedIn: 'root',
   })
 
-export class EventMongodbService implements EventService{
-    constructor(private http: HttpClient){ }
-
+export class EventServiceMongodb extends EventService{
+    constructor(http: HttpClient) {
+        super(http);
+    }
+    
     getEvents(): Observable<any> {
         return this.http.get('/api/v1/events');
     }

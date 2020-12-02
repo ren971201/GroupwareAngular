@@ -1,15 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { from, Observable } from 'rxjs';
-import Event from 'src/app/domain/event';
-import EventService from './EventService';
+import { EventService } from './event.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EventDynamodbService implements EventService {
-
-  constructor(private http: HttpClient) { }
+export class EventServiceDynamodb extends EventService {
+  constructor(http: HttpClient) {
+    super(http);
+  }
 
   getEvents(){
     return this.http.post('https://zd4o20m2y0.execute-api.ap-northeast-1.amazonaws.com/dev/dynamodbctrl',
@@ -17,14 +16,5 @@ export class EventDynamodbService implements EventService {
         "OperationType": "SCAN"
     },
     {responseType: 'text'});
-  }
-
-  getEventPage(page:number): Observable<any>{
-    return from([0]);
-  }
-  postEventData(event:Event): void{}
-  
-  getTableSize(): Observable<any>{
-    return from([0]);
   }
 }

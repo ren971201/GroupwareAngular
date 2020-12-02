@@ -1,17 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { LocalService } from '../../../services/local.service';
-import { MongodbService } from '../../../services/mongodb.service';
-import { DynamodbService } from '../../../services/dynamodb.service';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import Event from '../../../domain/Event'
+import Event from '../../../domain/event'
 import { environment } from 'src/environments/environment';
-import { textSpanIsEmpty } from 'typescript';
+import { EventServiceProvider } from 'src/app/services/event/event.service.provider';
+import { InformationServiceProvider } from 'src/app/services/information/information.service.provider';
+import { EventService } from '../../../services/event/event.service'
+import { USE_MONGODB } from 'src/app/app.config';
+import { InformationService } from 'src/app/services/information/information.service';
 
 @Component({
   selector: 'app-top',
   templateUrl: './top.component.html',
   styleUrls: ['./top.component.scss'],
-  providers: [LocalService,MongodbService, DynamodbService],
+  providers: [EventServiceProvider, InformationServiceProvider]
 })
 export class TopComponent implements OnInit {
   readonly limitPage: number = environment.limitPage; // 指定回数(1ページに表示する項目の数)を定義
@@ -19,26 +20,30 @@ export class TopComponent implements OnInit {
   tableSize:number;// データの総数
   postForm:FormGroup;// イベント登録フォームのグループ
   listPlace = environment.listPlace.slice(0,environment.listPlace.length);// 場所の一覧
-  visiblePostForm:boolean = false;// イベント登録フォームの表示状態
   btnMessage:string;// ボタンに表示するメッセージ
-  listEvents:object;// mongoDBからの取得結果
-  listEventsDynamoDB:object;// DynamoDBからの取得結果
-  visibleList:boolean;// DynamoDBから取得した結果の表示状態
+  listEvents:object;// DBからの取得結果
+  listInformation:object;// mongoDBからのインフォメーション取得結果
+  listEventsDynamoDB:object;// DynamoDBからのイベント取得結果
+  isVisiblePostForm:boolean = false;// イベント登録フォームの表示状態
+  isVisibleList:boolean;// DynamoDBから取得した結果の表示状態
+  isUsingMongoDB:boolean = true;// MongoDBを使用するか
 
   constructor(
-    private localService: LocalService,
-    private mongodbService: MongodbService,
-    private dynamodbService: DynamodbService,
-    private fb: FormBuilder
+    private eventService: EventService,
+    private informationService: InformationService, 
+    private fb: FormBuilder,
+    @Inject(USE_MONGODB) private useMongoDB:boolean
   ){}
 
   ngOnInit(): void {
     this.page = 1;
-    this.visiblePostForm = false;
-    this.visibleList = false;
+    this.isVisiblePostForm = false;
+    this.isVisibleList = false;
+    this.isUsingMongoDB = this.useMongoDB
     this.btnMessage = "イベントを追加";
     this.getTableSize();
-    this.mongodbService.getEventPage(this.page)
+    this.getInformation();
+    this.eventService.getEventPage(this.page)
     .subscribe(
       (result)=>{
         this.listEvents = result;
@@ -57,7 +62,7 @@ export class TopComponent implements OnInit {
 
   // 総数を取得
   getTableSize(){
-    this.mongodbService.getTabelSize()
+    this.eventService.getTableSize()
     .subscribe(
       (result)=>{
         this.tableSize = result;
@@ -69,7 +74,7 @@ export class TopComponent implements OnInit {
 
   // ページネーションのページ切り替え時の処理
   loadEventPage(){
-    this.mongodbService.getEventPage(this.page)
+    this.eventService.getEventPage(this.page)
     .subscribe(
       (result)=>{
         this.listEvents = result;
@@ -82,20 +87,27 @@ export class TopComponent implements OnInit {
   // データの追加
   postEvent(){
     const postFormValue:Event= this.postForm.value;// フォームに入力された値を登録用に変換
-    this.mongodbService.postEventData(postFormValue);// データベースにポスト
+    this.eventService.postEventData(postFormValue);// データベースにポスト
     this.postForm.reset();// フォームを空に
     this.ngOnInit();// コンポーネントを更新
   }
 
   // お知らせを取得
   getInformation() {
-    return this.localService.information;
+    this.informationService.getInformation()
+    .subscribe(
+      (result)=>{
+        this.listInformation = result.information;
+      },
+      (err)=>{console.log('エラー:'+err);},
+      ()=>{console.log('データ更新');}
+    )
   }
 
   // イベント登録フォームの表示非表示
   onClickBtnPostEvent() {
-    this.visiblePostForm = !this.visiblePostForm;
-    if(this.visiblePostForm){
+    this.isVisiblePostForm = !this.isVisiblePostForm;
+    if(this.isVisiblePostForm){
       this.btnMessage="閉じる";
     }
     else {
@@ -104,12 +116,12 @@ export class TopComponent implements OnInit {
   }
 
   getEventsByDynamoDB() {
-    this.dynamodbService.getEvents()
+    this.eventService.getEvents()
     .subscribe(
       (val) => {
           const result = JSON.parse(val);
           this.listEventsDynamoDB = result.Items;
-          this.visibleList = true;
+          this.isVisibleList = true;
       },
       response => {
           console.log("call in error", response);
@@ -118,7 +130,6 @@ export class TopComponent implements OnInit {
           console.log("completed.");
       }
     );// これでリクエストが送信可能
-;
   }
 
   // 指定回数ループするための仮の配列

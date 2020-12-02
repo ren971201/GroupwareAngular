@@ -3,76 +3,79 @@
         <h1>お知らせ</h1>
         <table>
             <tr><th>お知らせ</th></tr>
-            <tr *ngFor="let item of getInformation()">
-                <td>{{item.item}}</td>
+            <tr *ngFor="let item of listInformation">
+                <td>{{item.information}}</td>
             </tr>
         </table>
     </div>
     <div class='event'>
         <h1>イベント</h1>
-        <h4>MongoDB</h4>
-        <table>
-          <tr>
-            <th class="box-l">イベント</th>
-            <th class="box-m">日程</th>
-            <th class="box-l">場所</th>
-            <th class="box-s">開始時刻</th>
-            <th class="box-s">終了時刻</th>
-          </tr>
-          <tr *ngFor="let item of listEvents">
-            <td>{{item.event}}</td>
-            <td>{{item.schedule}}</td>  
-            <td>{{item.place}}</td>  
-            <td>{{item.start}}</td>  
-            <td>{{item.end}}</td>  
-          </tr>
-        </table>
-        <hr>    
-        <ngb-pagination class="d-flex justify-content-start" [collectionSize]="tableSize" [pageSize]="limitPage" [(page)]="page" [directionLinks]="false" (pageChange)=loadEventPage()></ngb-pagination>
-    </div>
-    <div class='post' [hidden]="!visiblePostForm">
-        <h3>イベント追加</h3>
-        <hr>
-        <form [(formGroup)]="postForm" (ngSubmit)="postEvent()">
-          <label class="ef">イベント<br>
-          <input type="text" placeholder="Event" class="box-l" formControlName="event"/></label>
-          <br>
-          <label>日程<br>
-          <input type="date" placeholder="Schedule" class="box-l" formControlName="schedule"/></label>
-          <br>
-          <label>場所<br>
-          <select formControlName="place"  class="box-l">
-            <option value='' disabled selected style='display:none;'>Place</option>
-            <option *ngFor="let item of listPlace" [ngValue]="item.name">{{item.name}}</option>
-          </select></label>
-          <br>
-          <label>開始時刻<br>
-          <input type="time" placeholder="Start" class="box-s" formControlName="start"/></label>
-          <br>
-          <label>終了時刻<br>
-          <input type="time" placeholder="End" class="box-s" formControlName="end"/></label>
-          <br>
-          <input type="submit" value="登録"  class='submit' [disabled]="postForm.invalid"/>
-        </form>
+        <div class="mongoDB" *ngIf='isUsingMongoDB'>
+          <h4>MongoDB</h4>
+          <table>
+            <tr>
+              <th class="box-l">イベント</th>
+              <th class="box-m">日程</th>
+              <th class="box-l">場所</th>
+              <th class="box-s">開始時刻</th>
+              <th class="box-s">終了時刻</th>
+            </tr>
+            <tr *ngFor="let item of listEvents">
+              <td>{{item.event}}</td>
+              <td>{{item.schedule}}</td>  
+              <td>{{item.place}}</td>  
+              <td>{{item.start}}</td>  
+              <td>{{item.end}}</td>  
+            </tr>
+          </table>
+          <hr>    
+          <ngb-pagination class="d-flex justify-content-start" [collectionSize]="tableSize" [pageSize]="limitPage" [(page)]="page" [directionLinks]="false" (pageChange)=loadEventPage()></ngb-pagination>
+          <div class='post' [hidden]="!isVisiblePostForm">
+            <h3>イベント追加</h3>
+            <hr>
+            <form [(formGroup)]="postForm" (ngSubmit)="postEvent()">
+              <label class="ef">イベント<br>
+              <input type="text" placeholder="Event" class="box-l" formControlName="event"/></label>
+              <br>
+              <label>日程<br>
+              <input type="date" placeholder="Schedule" class="box-l" formControlName="schedule"/></label>
+              <br>
+              <label>場所<br>
+              <select formControlName="place"  class="box-l">
+                <option value='' disabled selected style='display:none;'>Place</option>
+                <option *ngFor="let item of listPlace" [ngValue]="item.name">{{item.name}}</option>
+              </select></label>
+              <br>
+              <label>開始時刻<br>
+              <input type="time" placeholder="Start" class="box-s" formControlName="start"/></label>
+              <br>
+              <label>終了時刻<br>
+              <input type="time" placeholder="End" class="box-s" formControlName="end"/></label>
+              <br>
+              <input type="submit" value="登録"  class='submit' [disabled]="postForm.invalid"/>
+            </form>
+        </div>
+      </div>
     </div>
     <button id="btnDisplayPostForm" (click)="onClickBtnPostEvent()">{{btnMessage}}</button>
-    <hr>
-    <h4>DynamoDB</h4>
-    <button (click)="getEventsByDynamoDB()" *ngIf="!visibleList">データを取得</button>
-    <table *ngIf="visibleList">
-      <tr>
-        <th class="box-l">イベント</th>
-        <th class="box-m">日程</th>
-        <th class="box-l">場所</th>
-        <th class="box-s">開始時刻</th>
-        <th class="box-s">終了時刻</th>
-      </tr>
-      <tr *ngFor="let item of listEventsDynamoDB">
-        <td>{{item.event}}</td>
-        <td>{{item.schedule}}</td>  
-        <td>{{item.place}}</td>  
-        <td>{{item.start}}</td>  
-        <td>{{item.end}}</td>  
-      </tr>
-    </table>
+    <div class="dynamoDB" *ngIf='!isUsingMongoDB'>
+      <h4>DynamoDB</h4>
+      <button (click)="getEventsByDynamoDB()" *ngIf="!isVisibleList">データを取得</button>
+      <table *ngIf="isVisibleList">
+        <tr>
+          <th class="box-l">イベント</th>
+          <th class="box-m">日程</th>
+          <th class="box-l">場所</th>
+          <th class="box-s">開始時刻</th>
+          <th class="box-s">終了時刻</th>
+        </tr>
+        <tr *ngFor="let item of listEventsDynamoDB">
+          <td>{{item.event}}</td>
+          <td>{{item.schedule}}</td>  
+          <td>{{item.place}}</td>  
+          <td>{{item.start}}</td>  
+          <td>{{item.end}}</td>  
+        </tr>
+      </table>
+    </div>
   </div>

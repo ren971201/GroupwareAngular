@@ -5,6 +5,7 @@ import Event from '../../../domain/event'
 import { environment } from 'src/environments/environment';
 import { EventServiceProvider } from 'src/app/services/event/event.service.provider';
 import { EventService } from '../../../services/event/event.service'
+import { USE_MONGODB } from 'src/app/app.config';
 
 @Component({
   selector: 'app-top',
@@ -18,22 +19,25 @@ export class TopComponent implements OnInit {
   tableSize:number;// データの総数
   postForm:FormGroup;// イベント登録フォームのグループ
   listPlace = environment.listPlace.slice(0,environment.listPlace.length);// 場所の一覧
-  visiblePostForm:boolean = false;// イベント登録フォームの表示状態
   btnMessage:string;// ボタンに表示するメッセージ
   listEvents:object;// mongoDBからの取得結果
   listEventsDynamoDB:object;// DynamoDBからの取得結果
-  visibleList:boolean;// DynamoDBから取得した結果の表示状態
+  isVisiblePostForm:boolean = false;// イベント登録フォームの表示状態
+  isVisibleList:boolean;// DynamoDBから取得した結果の表示状態
+  isUsingMongoDB:boolean = true;// MongoDBを使用するか
 
   constructor(
     private eventService: EventService,
     private informationService: LocalService, 
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    @Inject(USE_MONGODB) private useMongoDB:boolean
   ){}
 
   ngOnInit(): void {
     this.page = 1;
-    this.visiblePostForm = false;
-    this.visibleList = false;
+    this.isVisiblePostForm = false;
+    this.isVisibleList = false;
+    this.isUsingMongoDB = this.useMongoDB
     this.btnMessage = "イベントを追加";
     this.getTableSize();
     this.eventService.getEventPage(this.page)
@@ -92,8 +96,8 @@ export class TopComponent implements OnInit {
 
   // イベント登録フォームの表示非表示
   onClickBtnPostEvent() {
-    this.visiblePostForm = !this.visiblePostForm;
-    if(this.visiblePostForm){
+    this.isVisiblePostForm = !this.isVisiblePostForm;
+    if(this.isVisiblePostForm){
       this.btnMessage="閉じる";
     }
     else {
@@ -107,7 +111,7 @@ export class TopComponent implements OnInit {
       (val) => {
           const result = JSON.parse(val);
           this.listEventsDynamoDB = result.Items;
-          this.visibleList = true;
+          this.isVisibleList = true;
       },
       response => {
           console.log("call in error", response);

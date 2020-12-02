@@ -1,17 +1,18 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { LocalService } from '../../../services/information/local.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import Event from '../../../domain/event'
 import { environment } from 'src/environments/environment';
 import { EventServiceProvider } from 'src/app/services/event/event.service.provider';
+import { InformationServiceProvider } from 'src/app/services/information/information.service.provider';
 import { EventService } from '../../../services/event/event.service'
 import { USE_MONGODB } from 'src/app/app.config';
+import { InformationService } from 'src/app/services/information/information.service';
 
 @Component({
   selector: 'app-top',
   templateUrl: './top.component.html',
   styleUrls: ['./top.component.scss'],
-  providers: [EventServiceProvider]
+  providers: [EventServiceProvider, InformationServiceProvider]
 })
 export class TopComponent implements OnInit {
   readonly limitPage: number = environment.limitPage; // 指定回数(1ページに表示する項目の数)を定義
@@ -20,15 +21,16 @@ export class TopComponent implements OnInit {
   postForm:FormGroup;// イベント登録フォームのグループ
   listPlace = environment.listPlace.slice(0,environment.listPlace.length);// 場所の一覧
   btnMessage:string;// ボタンに表示するメッセージ
-  listEvents:object;// mongoDBからの取得結果
-  listEventsDynamoDB:object;// DynamoDBからの取得結果
+  listEvents:object;// DBからの取得結果
+  listInformation:object;// mongoDBからのインフォメーション取得結果
+  listEventsDynamoDB:object;// DynamoDBからのイベント取得結果
   isVisiblePostForm:boolean = false;// イベント登録フォームの表示状態
   isVisibleList:boolean;// DynamoDBから取得した結果の表示状態
   isUsingMongoDB:boolean = true;// MongoDBを使用するか
 
   constructor(
     private eventService: EventService,
-    private informationService: LocalService, 
+    private informationService: InformationService, 
     private fb: FormBuilder,
     @Inject(USE_MONGODB) private useMongoDB:boolean
   ){}
@@ -40,6 +42,7 @@ export class TopComponent implements OnInit {
     this.isUsingMongoDB = this.useMongoDB
     this.btnMessage = "イベントを追加";
     this.getTableSize();
+    this.getInformation();
     this.eventService.getEventPage(this.page)
     .subscribe(
       (result)=>{
@@ -91,7 +94,14 @@ export class TopComponent implements OnInit {
 
   // お知らせを取得
   getInformation() {
-    return this.informationService.getInformation;
+    this.informationService.getInformation()
+    .subscribe(
+      (result)=>{
+        this.listInformation = result.information;
+      },
+      (err)=>{console.log('エラー:'+err);},
+      ()=>{console.log('データ更新');}
+    )
   }
 
   // イベント登録フォームの表示非表示

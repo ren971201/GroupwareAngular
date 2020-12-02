@@ -43,7 +43,6 @@ const routes:Routes = [
     RouterModule.forRoot(routes),
     NgbModule
   ],
-  providers: [EventServiceProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
